@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Item } from './types';
 import { WorkspaceContext } from './workspace';
 import RenameBox from './renameBox';
+import Image from 'next/image';
 
 import '../styles/directory.css';
 
@@ -73,6 +74,26 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
             <tr className='dirItem' key={index}>
               <td>
                 <input type='checkbox' value={childItem.name}></input>
+              </td>
+              <td>
+                {childItem.type === 'directory' && (
+                  <Image
+                    src='/folder.svg'
+                    alt='Folder logo'
+                    width={100}
+                    height={24}
+                    priority
+                  />
+                )}
+                {childItem.type === 'note' && (
+                  <Image
+                    src='/notes.svg'
+                    alt='notes logo'
+                    width={100}
+                    height={24}
+                    priority
+                  />
+                )}
               </td>
               <td onClick={() => handleItemClick(childItem)}>
                 {childItem.name}

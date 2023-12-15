@@ -74,6 +74,7 @@ export function Workspace() {
         };
         newItem.items = newItem.items ? [...newItem.items, newNote] : [newNote];
       }
+      sortItems(newItem);
       return newItem;
     });
   }, []);
@@ -91,6 +92,7 @@ export function Workspace() {
         };
         newItem.items = newItem.items ? [...newItem.items, newDir] : [newDir];
       }
+      sortItems(newItem);
       return newItem;
     });
   }, []);
@@ -118,7 +120,6 @@ export function Workspace() {
   const updateName = useCallback((newName: string, originalName: string) => {
     setCurrentItem((prevItem) => {
       const newItem = _.cloneDeep(prevItem);
-      console.log(newName, originalName);
       if (newItem.items) {
         for (let i = 0; i < newItem.items.length; i++) {
           if (newItem.items[i].name === originalName) {
@@ -126,9 +127,26 @@ export function Workspace() {
           }
         }
       }
+      sortItems(newItem);
       return newItem;
     });
   }, []);
+
+  const sortItems = (newItem: Item) => {
+    if (newItem.items) {
+      newItem.items.sort((a, b) => {
+        if (a.type === 'directory' && b.type !== 'directory') {
+          return -1;
+        } else if (a.type !== 'directory' && b.type === 'directory') {
+          return 1;
+        } else {
+          return a.name.localeCompare(b.name);
+        }
+      });
+    } else {
+      return;
+    }
+  };
 
   return (
     <div className='workspace'>
