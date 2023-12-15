@@ -5,120 +5,129 @@ import DirectoryView from './directoryView';
 
 import _ from 'lodash';
 
+import '../styles/workspace.css';
 
 function ItemView(item: Item) {
-    const { itemStack, setCurrentItem } = useContext(WorkspaceContext);
+  const { setCurrentItem } = useContext(WorkspaceContext);
 
-    const goToEnclosingFolder = useCallback(() => {
-        if (item.parent == null) {
-            alert('Cannot go to enclosing folder.');
-            return;
-        }
+  const goToEnclosingFolder = useCallback(() => {
+    if (item.parent == null) {
+      alert('Cannot go to enclosing folder.');
+      return;
+    }
 
-        setCurrentItem(item.parent);
-    }, [item, setCurrentItem]);
-    
-    return (
-        <div>
-            <h2>{item.name}</h2>
-            <h3>{item.type}</h3>
-            {item.parent != null && <button onClick={goToEnclosingFolder}>Previous Directory</button>}
-            {item.type == 'directory' && (
-                <DirectoryView directory={item} />
-            )}
-            {item.type == 'note' && (
-                <NoteView note={item} />
-            )}
-        </div>
-    );
+    setCurrentItem(item.parent);
+  }, [item, setCurrentItem]);
+
+  return (
+    <div>
+      <h2>Current Item: {item.name}</h2>
+      <h3>Type: {item.type}</h3>
+      <div className='item'>
+        {item.parent != null && (
+          <button onClick={goToEnclosingFolder}>Previous Directory</button>
+        )}
+        {item.type == 'directory' && <DirectoryView directory={item} />}
+        {item.type == 'note' && <NoteView note={item} />}
+      </div>
+    </div>
+  );
 }
 
-
 interface WorkspaceContextProps {
-    currentItem: Item | null;
-    itemStack: Item[];
-    setCurrentItem: (item: Item) => void;
-    addNote: (fileName: string, noteText: string) => void;
-    addDirectory: (newDirName: string) => void;
-    updateNote: (newText: string) => void;
+  currentItem: Item | null;
+  setCurrentItem: (item: Item) => void;
+  addNote: (fileName: string, noteText: string) => void;
+  addDirectory: (newDirName: string) => void;
+  updateNote: (newText: string) => void;
+  deleteDirectory: (result: Map<string, number>) => void;
 }
 
 export const WorkspaceContext = React.createContext<WorkspaceContextProps>({
-    currentItem: null,
-    itemStack: [],
-    setCurrentItem: (item: Item) => {},
-    addNote: (fileName: string, noteText: string) => {},
-    addDirectory: (newDirName: string) => {},
-    updateNote: (newText: string) => {},
+  currentItem: null,
+  setCurrentItem: (item: Item) => {},
+  addNote: (fileName: string, noteText: string) => {},
+  addDirectory: (newDirName: string) => {},
+  updateNote: (newText: string) => {},
+  deleteDirectory: (result: Map<string, number>) => {},
 });
 
 export function Workspace() {
-    const [itemStack, setItemStack] = useState<Item[]>([
-        {
-            name: 'root',
-            type: 'directory',
-            items: [],
-        },
-    ]);
+  const [currentItem, setCurrentItem] = useState<Item>({
+    name: 'root',
+    type: 'directory',
+    items: [],
+  });
 
-    const setCurrentItem = useCallback((item: Item) => {
-        setItemStack(prevStack => [...prevStack, item]);
-    }, []);
+  const addNote = useCallback((fileName: string, noteText: string) => {
+    setCurrentItem((prevItem) => {
+      // Deep clone the item
+      const newItem = _.cloneDeep(prevItem);
+      if (newItem.type === 'directory') {
+        const newNote: Item = {
+          type: 'note',
+          name: fileName,
+          note: noteText,
+          parent: newItem,
+        };
+        newItem.items = newItem.items ? [...newItem.items, newNote] : [newNote];
+      }
+      return newItem;
+    });
+  }, []);
 
-    const addNote = useCallback((fileName: string, noteText: string) => {
-        setItemStack(prevStack => {
-            // Deep clone the itemStack
-            const updatedStack = _.cloneDeep(prevStack);
-            const currentDir = updatedStack[updatedStack.length - 1];
-            if (currentDir.type === 'directory') {
-                const newNote: Item = {
-                    type: 'note',
-                    name: fileName,
-                    note: noteText,
-                    parent: currentDir,
-                };
-                currentDir.items = currentDir.items ? [...currentDir.items, newNote] : [newNote];
-            }
-            return updatedStack;
-        });
-    }, []);
-    
-    const addDirectory = useCallback((newDirName: string) => {
-        setItemStack(prevStack => {
-            // Deep clone the itemStack
-            const updatedStack = _.cloneDeep(prevStack);
-            const currentDir = updatedStack[updatedStack.length - 1];
-            if (currentDir.type === 'directory') {
-                const newDir: Item = {
-                    type: 'directory',
-                    name: newDirName,
-                    items: [],
-                    parent: currentDir,
-                };
-                currentDir.items = currentDir.items ? [...currentDir.items, newDir] : [newDir];
-            }
-            return updatedStack;
-        });
-    }, []);
-    
+  const addDirectory = useCallback((newDirName: string) => {
+    setCurrentItem((prevItem) => {
+      // Deep clone the item
+      const newItem = _.cloneDeep(prevItem);
+      if (newItem.type === 'directory') {
+        const newDir: Item = {
+          type: 'directory',
+          name: newDirName,
+          items: [],
+          parent: newItem,
+        };
+        newItem.items = newItem.items ? [...newItem.items, newDir] : [newDir];
+      }
+      return newItem;
+    });
+  }, []);
 
-    const updateNote = useCallback((newText: string) => {
-        setItemStack(prevStack => {
-            const updatedStack = [...prevStack];
-            const currentItem = updatedStack[updatedStack.length - 1];
-            if (currentItem.type === 'note') {
-                currentItem.note = newText;
-                updatedStack[updatedStack.length - 1] = { ...currentItem };
-            }
-            return updatedStack;
-        });
-    }, []);
+  const updateNote = useCallback((newText: string) => {
+    setCurrentItem((prevItem) => {
+      const newItem = _.cloneDeep(prevItem);
+      if (prevItem.type === 'note') {
+        newItem.note = newText;
+      }
+      return newItem;
+    });
+  }, []);
 
-    const currentItem = itemStack[itemStack.length - 1];
+  const deleteDirectory = useCallback((result: Map<string, number>) => {
+    setCurrentItem((prevItem) => {
+      const newItem = _.cloneDeep(prevItem);
+      console.log(newItem);
+      newItem.items = newItem.items
+        ? newItem.items.filter((item) => !result.has(item.name))
+        : undefined;
+      return newItem;
+    });
+  }, []);
 
-    return (
-        <WorkspaceContext.Provider value={{ currentItem, itemStack, setCurrentItem, addNote, addDirectory, updateNote }}>
-            <ItemView {...currentItem} />
-        </WorkspaceContext.Provider>
-    );
+  return (
+    <div className='workspace'>
+      <WorkspaceContext.Provider
+        value={{
+          currentItem,
+          setCurrentItem,
+          addNote,
+          addDirectory,
+          updateNote,
+          deleteDirectory,
+        }}
+      >
+        <ItemView {...currentItem} />
+      </WorkspaceContext.Provider>
+    </div>
+  );
 }
