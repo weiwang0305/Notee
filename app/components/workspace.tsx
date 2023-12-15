@@ -41,6 +41,7 @@ interface WorkspaceContextProps {
   addDirectory: (newDirName: string) => void;
   updateNote: (newText: string) => void;
   deleteDirectory: (result: Map<string, number>) => void;
+  updateName: (newName: string, originalName: string) => void;
 }
 
 export const WorkspaceContext = React.createContext<WorkspaceContextProps>({
@@ -50,6 +51,7 @@ export const WorkspaceContext = React.createContext<WorkspaceContextProps>({
   addDirectory: (newDirName: string) => {},
   updateNote: (newText: string) => {},
   deleteDirectory: (result: Map<string, number>) => {},
+  updateName: (newName: string, originalName: string) => {},
 });
 
 export function Workspace() {
@@ -106,10 +108,24 @@ export function Workspace() {
   const deleteDirectory = useCallback((result: Map<string, number>) => {
     setCurrentItem((prevItem) => {
       const newItem = _.cloneDeep(prevItem);
-      console.log(newItem);
       newItem.items = newItem.items
         ? newItem.items.filter((item) => !result.has(item.name))
         : undefined;
+      return newItem;
+    });
+  }, []);
+
+  const updateName = useCallback((newName: string, originalName: string) => {
+    setCurrentItem((prevItem) => {
+      const newItem = _.cloneDeep(prevItem);
+      console.log(newName, originalName);
+      if (newItem.items) {
+        for (let i = 0; i < newItem.items.length; i++) {
+          if (newItem.items[i].name === originalName) {
+            newItem.items[i].name = newName;
+          }
+        }
+      }
       return newItem;
     });
   }, []);
@@ -124,6 +140,7 @@ export function Workspace() {
           addDirectory,
           updateNote,
           deleteDirectory,
+          updateName,
         }}
       >
         <ItemView {...currentItem} />

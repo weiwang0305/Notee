@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Item } from './types';
 import { WorkspaceContext } from './workspace';
+import RenameBox from './renameBox';
 
 import '../styles/directory.css';
 
@@ -11,6 +12,8 @@ interface DirectoryViewProps {
 const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
   const { addNote, addDirectory, setCurrentItem, deleteDirectory } =
     useContext(WorkspaceContext);
+
+  const [isRenaming, setIsRenaming] = useState(false);
 
   const handleAddNote = () => {
     const fileName = window.prompt('Enter the name of the new note:');
@@ -54,19 +57,33 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
       <button onClick={handleAddNote}>New Note</button>
       <button onClick={handleAddDirectory}>New Directory</button>
       <button onClick={handleDeletion}>Delete</button>
+      <button
+        onClick={() => {
+          if (!isRenaming) {
+            setIsRenaming(true);
+          }
+        }}
+      >
+        Rename
+      </button>
+
       <table className='dirSection'>
         <tbody>
           {directory.items?.map((childItem, index) => (
             <tr className='dirItem' key={index}>
               <td>
-                <input
-                  type='checkbox'
-                  name={childItem.name}
-                  value={childItem.name}
-                ></input>
+                <input type='checkbox' value={childItem.name}></input>
               </td>
               <td onClick={() => handleItemClick(childItem)}>
                 {childItem.name}
+              </td>
+              <td>
+                {isRenaming && (
+                  <RenameBox
+                    name={childItem.name}
+                    setIsRenaming={setIsRenaming}
+                  />
+                )}
               </td>
             </tr>
           ))}
