@@ -2,13 +2,14 @@ import React, { useState, useContext, useCallback } from 'react';
 import { Item } from './types';
 import NoteView from './noteView';
 import DirectoryView from './directoryView';
+import PathView from './pathView';
 
 import _ from 'lodash';
 
 import '../styles/workspace.css';
 
 function ItemView(item: Item) {
-  const { setCurrentItem } = useContext(WorkspaceContext);
+  const { currentItem, setCurrentItem } = useContext(WorkspaceContext);
 
   const goToEnclosingFolder = useCallback(() => {
     if (item.parent == null) {
@@ -21,6 +22,7 @@ function ItemView(item: Item) {
 
   return (
     <div>
+      {currentItem && <PathView />}
       <h2>Current Item: {item.name}</h2>
       <h3>Type: {item.type}</h3>
       <div className='item'>
@@ -147,6 +149,22 @@ export function Workspace() {
       return;
     }
   };
+
+  // const sortItems = (newItem: Item) => {
+  //   if(newItem.items < 2) {
+  //     return newItem.items
+  //   }
+  //   const mid = Math.floor(newItem.items.length / 2)
+  //   const leftArray = newItem.items.slice(0,mid)
+  //   const rightArray = newItem.items.slice(mid)
+  //   return merge(mergeSort(leftArray), mergeSort(rightArray))
+  // }
+  // const merge = (leftArray,rightArray) => {
+  //   const sortedArray = []
+  //   while(leftArray.length && rightArray.length){
+  //     if(leftArray[0])
+  //   }
+  // }
 
   return (
     <div className='workspace'>

@@ -7,7 +7,6 @@
 3. Run `npm run dev` in the project directory.
 4. The app should now be running on `localhost:3030` so put that into your web browser and try it out.
 
-
 ## Provided code
 
 **Items**
@@ -16,32 +15,32 @@ An **Item** can be either a **Note** or a **Directory**. A **Note** is a leaf no
 
 Schema:
 
-| **Field** | **Type**              | **Description**                                                                                       |
-|-----------|-----------------------|-------------------------------------------------------------------------------------------------------|
-| type      | ‘note’ \| ‘directory’ | Defines whether an Item is a Note or Directory.                                                       |
-| name      | string                | The name associated with the Item.                                                                    |
-| parent    | Item \| undefined     | A reference to the parent of this Item.   undefined for the `root` directory.                         |
-| note      | string \| undefined   | The actual notes text that the user can set for `Note` items.   undefined when `type == ‘directory’`. |
-| items     | Item[] \| undefined   | The items in this directory if the item is a `Directory`.   undefined when `type == ‘note’`.          |
+| **Field** | **Type**              | **Description**                                                                                     |
+| --------- | --------------------- | --------------------------------------------------------------------------------------------------- |
+| type      | ‘note’ \| ‘directory’ | Defines whether an Item is a Note or Directory.                                                     |
+| name      | string                | The name associated with the Item.                                                                  |
+| parent    | Item \| undefined     | A reference to the parent of this Item. undefined for the `root` directory.                         |
+| note      | string \| undefined   | The actual notes text that the user can set for `Note` items. undefined when `type == ‘directory’`. |
+| items     | Item[] \| undefined   | The items in this directory if the item is a `Directory`. undefined when `type == ‘note’`.          |
 
 This is defined in `app/components/types.ts`.
 
 **Components**
 
-* `ReactApp (app/components/reactApp.tsx)` - The main component that renders the app.
-* `Workspace (app/components/workspace.tsx)` - The component that renders the filesystem.
-  * This component provides a `React.Context` through which child components can filesystem methods and state.
-* `ItemView (app/components/workspace.tsx)` - The component which renders an individual Item.
-  * This component is checks the type and renders the correct component for the Item type (Note or Directory).
-* `noteView (app/components/noteView.tsx)` - The component which renders a Note.
-* `directoryView (app/components/directoryView.tsx)` - The component which renders a Directory.
+- `ReactApp (app/components/reactApp.tsx)` - The main component that renders the app.
+- `Workspace (app/components/workspace.tsx)` - The component that renders the filesystem.
+  - This component provides a `React.Context` through which child components can filesystem methods and state.
+- `ItemView (app/components/workspace.tsx)` - The component which renders an individual Item.
+  - This component is checks the type and renders the correct component for the Item type (Note or Directory).
+- `noteView (app/components/noteView.tsx)` - The component which renders a Note.
+- `directoryView (app/components/directoryView.tsx)` - The component which renders a Directory.
 
 **React Context**
 
 The `Workspace` component provides a `React.Context` through which child components can filesystem methods and state. This is defined in `app/components/workspace.tsx`.
 
 | **Field**      | **Type**     | **Description**                                                                            |
-|----------------|--------------|--------------------------------------------------------------------------------------------|
+| -------------- | ------------ | ------------------------------------------------------------------------------------------ |
 | currentItem    | Item \| null | The current item rendered in the `Workspace`.                                              |
 | setCurrentItem | Function     | Sets the current item to a different item.                                                 |
 | addNote        | Function     | Creates a new note given a `fileName` and `noteText`, if the `currentItem` is a directory. |
@@ -51,3 +50,8 @@ The `Workspace` component provides a `React.Context` through which child compone
 **Questions**
 
 If there are any questions or issues about the starter code, please reach out to `support@quiltlabs.ai` and we will respond ASAP. Good luck!
+
+## Thoughts and Journey
+
+**Deleting Items**
+I decided to go down the requirement one at a time. I started with Deleting items. Before actually working on the code, I took approximately one hour looking through the code trying to understand it. First things I've noticed was that some hooks were foreign to me.

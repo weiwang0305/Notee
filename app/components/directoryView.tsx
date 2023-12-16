@@ -11,14 +11,37 @@ interface DirectoryViewProps {
 }
 
 const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
-  const { addNote, addDirectory, setCurrentItem, deleteDirectory } =
-    useContext(WorkspaceContext);
+  const {
+    addNote,
+    addDirectory,
+    setCurrentItem,
+    deleteDirectory,
+    currentItem,
+  } = useContext(WorkspaceContext);
 
   const [isRenaming, setIsRenaming] = useState(false);
 
   const handleAddNote = () => {
     const fileName = window.prompt('Enter the name of the new note:');
-    if (fileName === null) return;
+    if (fileName === null) {
+      return;
+    } else {
+      console.log(currentItem);
+      if (currentItem?.items) {
+        for (let i = 0; i < currentItem.items.length; i++) {
+          console.log(currentItem.items[i].name, fileName);
+          if (
+            currentItem.items[i].name === fileName &&
+            currentItem.items[i].type === 'note'
+          ) {
+            alert('File name already exist');
+            return;
+          }
+        }
+      } else {
+        return null;
+      }
+    }
     const noteText = window.prompt('Enter the text of the new note:');
     if (noteText === null) return;
     addNote(fileName, noteText);
@@ -26,7 +49,21 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
 
   const handleAddDirectory = () => {
     const dirName = window.prompt('Enter the name of the new directory:');
-    if (dirName === null) return;
+    if (dirName === null) {
+      return;
+    } else {
+      if (currentItem?.items) {
+        for (let i = 0; i < currentItem.items.length; i++) {
+          if (
+            currentItem.items[i].name === dirName &&
+            currentItem.items[i].type === 'directory'
+          ) {
+            alert('Directory already exist');
+            return;
+          }
+        }
+      }
+    }
     addDirectory(dirName);
   };
 
@@ -88,7 +125,7 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
                 {childItem.type === 'note' && (
                   <Image
                     src='/notes.svg'
-                    alt='notes logo'
+                    alt='notes logo'2
                     width={100}
                     height={24}
                     priority
