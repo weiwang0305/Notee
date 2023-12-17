@@ -107,6 +107,19 @@ I fixed the problem by adding a checked attribute and adding a conditional check
 
 Second issue that I faced was renaming items in the current directory. Previously, renaming would only work on a single input box even though the entire column childItem.name was changed from text to input cell. That was very misleading. Furthermore, I only allowed the user to rename by clicking enter on the keyboard without any directions. This could lead to the users feeling confused and frustrated so I re-did the feature by adding a submit button instead and remove the 'enter' keydown event. I also made it so the user can change all of the file names they want. Since the currentItems.item and the table rows are in the exact order, I can easily just loop through the currentItem.item and replace it with the new item names.
 
+**Additional Features/ Changes**
+From what I mentioned above, one thing that I definitely need to fix is the nested for-loops in handleNameSubmit. I might be able to use a hashmap and use the has() function for a quicker lookup. Having a O(n^2) complexity will slow down the application if there are too many notes in the future.
+
+In one of the interfaces I used an any type for setSelectBoxes. I would never use any type if I had additional time to figure out why it was causing an error. I tried using string[] but it was throwing an error. The SelectBoxes state is initialized to [] and should always be string[]. However, when I try to use box: string[] it throws an error at me and I was working to fix it but didn't have enough time.
+
+I tried to think of all the edge cases I could for all the features but there is definitely some that I probably missed. However, I definitely tried to account for edge cases using if statements or by simply rendering buttons out that don't make sense to be there.
+
+I actually wanted to add a preview to the main directoryView. Right now, the directoryView only displays the name of the file. However, I think it might be useful to display a slice of the notes to give the user an idea on what's inside the specific note.
+
+I also want to make the noteView a bit better. Currently the textarea doesn't look as clean as it could. I want the the transition to isEditing to be as seamless as possible.
+
+Another stylistic adjustment is table when the user is renaming. I might be better to remove the first column that is completely empty.
+
 **Overall**
 
 Overall, it was a tiring but great experience. This was my first take-home assignment and I honestly had a great time making the application. I learned a lot during these past 3 days working with Next.JS, React, and TypeScript. I greatly appreciate this opportunity to show my skills. If possible, I would love some feedback on how I did and what I can improve on. I look forward to hearing back from you guys! Thank you so much!
