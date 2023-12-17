@@ -13,7 +13,7 @@ const NoteView: React.FC<NoteViewProps> = ({ note }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(note.note);
 
-  const handleNoteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
   };
 
@@ -38,8 +38,12 @@ const NoteView: React.FC<NoteViewProps> = ({ note }) => {
     >
       {isEditing ? (
         <div>
-          <input type='text' value={text} onChange={handleNoteChange} />
-          <button onClick={handleNoteSubmit}>Save</button>
+          <div>
+            <textarea value={text} onChange={handleNoteChange} />
+          </div>
+          <div>
+            <button onClick={handleNoteSubmit}>Save</button>
+          </div>
         </div>
       ) : (
         <div>{text}</div>

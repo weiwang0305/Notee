@@ -18,7 +18,6 @@ const TableView: React.FC<TableViewProps> = ({
   index,
   handleItemClick,
   isRenaming,
-  setIsRenaming,
   handleNameSubmit,
 }) => {
   const { selectedBoxes, setSelectedBoxes, updateName } =
@@ -41,12 +40,14 @@ const TableView: React.FC<TableViewProps> = ({
   return (
     <tr className='dirItem' key={index}>
       <td>
-        <input
-          type='checkbox'
-          value={childItem.name}
-          checked={false || selectedBoxes?.includes(childItem.name)}
-          onChange={checkboxHandler}
-        ></input>
+        {!isRenaming && (
+          <input
+            type='checkbox'
+            value={childItem.name}
+            checked={selectedBoxes?.includes(childItem.name)}
+            onChange={checkboxHandler}
+          ></input>
+        )}
       </td>
       <td>
         {childItem.type === 'directory' && (

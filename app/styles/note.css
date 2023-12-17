@@ -1,12 +1,54 @@
-.noteSection {
-    width: 100%;
-    border: 1px solid black;
-    transition: background-color 0.3s;
-    margin: 8px;
-    min-height: 300px;
-    padding: 12px
+/* .noteSection {
+  display: flex;
+  width: 100%;
+  border: 1px solid black;
+  transition: background-color 0.3s;
+  margin: 8px;
+  min-height: 300px;
+  padding: 12px;
 }
 
 .noteSection:hover {
-    background-color: #e0e0e0;
+  background-color: #e0e0e0;
+} */
+
+.noteSection {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-height: 400px;
+  max-height: 500px; /* Set your preferred maximum height */
+  overflow: auto; /* Add a scrollbar when content exceeds the height */
+  word-wrap: break-word; /* Break words to prevent overflow */
+  overflow-wrap: break-word; /* Ensure proper word wrapping */
+  white-space: pre-wrap; /* Allow wrapping on whitespace */
+}
+
+.noteSection:hover {
+  background-color: #f0f0f0;
+}
+
+textarea {
+  width: 90%;
+  resize: vertical;
+  padding: 15px;
+  border-radius: 15px;
+  border: 0;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.06);
+  height: 150px;
+}
+
+.noteSection button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.noteSection button:hover {
+  background-color: #45a049;
 }

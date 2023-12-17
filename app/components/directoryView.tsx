@@ -21,11 +21,14 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
     updateName,
   } = useContext(WorkspaceContext);
 
-  //State for renaming
+  //State for Renaming files
   const [isRenaming, setIsRenaming] = useState(false);
 
+  // Adding notes
   const handleAddNote = () => {
     const fileName = window.prompt('Enter the name of the new note:');
+
+    //Checking to see if the fileName already exists
     if (fileName === null) {
       return;
     } else {
@@ -47,8 +50,11 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
     addNote(fileName, noteText);
   };
 
+  //Adding Directory
   const handleAddDirectory = () => {
     const dirName = window.prompt('Enter the name of the new directory:');
+
+    //Checking to see if the directory name exists
     if (dirName === null) {
       return;
     } else {
@@ -64,45 +70,44 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
     addDirectory(dirName);
   };
 
+  //Clicking on Item div to either go into directory or note
   const handleItemClick = (item: Item) => {
     setCurrentItem(item);
   };
 
+  //Deleting directory or file
   const handleDeletion = () => {
     const confirmation = confirm('Want to delete?');
+
+    //Asking for confirmation to delete
     if (!confirmation) {
       return;
     } else {
+      //Using a hashmap to store all the fileNames that has been checked off.
+      //Hashmap can help speed up lookups
       const result = new Map();
       const checked = document.querySelectorAll(
         'input[type="checkbox"]:checked'
       );
-      console.log(checked);
       for (let i = 0; i < checked.length; i++) {
         result.set(checked[i].getAttribute('value'), 1);
       }
 
-      console.log(result);
       if (result === null) return;
       deleteDirectory(result);
-      for (let i = 0; i < checked.length; i++) {
-        console.log('checks', checked[i]);
-      }
     }
   };
 
+  //Handles the submit button when renaming files
   const handleNameSubmit = (event: MouseEvent<HTMLButtonElement>) => {
-    console.log(currentItem);
+    //Creating an array of all the files names in order
     const result: string[] = [];
     const inputBoxes: NodeListOf<HTMLFormElement> =
       document.querySelectorAll('input[type="text"]');
     for (let i = 0; i < inputBoxes.length; i++) {
       result.push(inputBoxes[i].value);
     }
-
     updateName(result);
-
-    console.log(result);
     setIsRenaming(false);
   };
 
