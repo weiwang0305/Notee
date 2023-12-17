@@ -26,7 +26,9 @@ function ItemView(item: Item) {
       <h3>Type: {item.type}</h3>
       <div className='item'>
         {item.parent != null && (
-          <button onClick={goToEnclosingFolder}>Previous Directory</button>
+          <button className='button' onClick={goToEnclosingFolder}>
+            Previous Directory
+          </button>
         )}
         {item.type == 'directory' && <DirectoryView directory={item} />}
         {item.type == 'note' && <NoteView note={item} />}

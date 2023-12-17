@@ -115,12 +115,27 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
     <div>
       {!isRenaming && (
         <div>
-          <button onClick={handleAddNote}>New Note</button>
-          <button onClick={handleAddDirectory}>New Directory</button>
-          <button onClick={handleDeletion}>Delete</button>
+          <button className='button' onClick={handleAddNote}>
+            {/* <Image
+              className='addnoteSVG'
+              src='/addnote.svg'
+              alt='Add note'
+              width={20}
+              height={20}
+              priority
+            /> */}
+            New Note
+          </button>
+          <button className='button' onClick={handleAddDirectory}>
+            New Directory
+          </button>
+          <button className='button' onClick={handleDeletion}>
+            Delete
+          </button>
         </div>
       )}
       <button
+        className='button'
         onClick={() => {
           if (
             currentItem &&
@@ -151,7 +166,11 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
           ))}
         </tbody>
       </table>
-      {isRenaming && <button onClick={handleNameSubmit}>Submit</button>}
+      {isRenaming && (
+        <button className='button' onClick={handleNameSubmit}>
+          Submit
+        </button>
+      )}
     </div>
   );
 };

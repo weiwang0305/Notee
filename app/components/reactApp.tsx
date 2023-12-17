@@ -1,21 +1,28 @@
-'use client'
+'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Workspace } from './workspace';
+import '../styles/headers.css';
+import { Roboto } from 'next/font/google';
+
+const roboto = Roboto({
+  weight: '400',
+  subsets: ['latin'],
+});
 
 function Header() {
-    return (
-        <header>
-            <h1>Quilt Labs Notes Filesystem App</h1>
-        </header>
-    );
+  return (
+    <header>
+      <h1>Quilt Labs Notes Filesystem App</h1>
+    </header>
+  );
 }
 
 export default function ReactApp() {
-    return (
-        <main>
-            <Header />
-            <Workspace />
-        </main>
-    );
+  return (
+    <main className={roboto.className}>
+      <Header />
+      <Workspace />
+    </main>
+  );
 }

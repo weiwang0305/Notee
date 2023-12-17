@@ -4,6 +4,8 @@ import { Item } from './types';
 import { useState, useContext, MouseEvent } from 'react';
 import { WorkspaceContext } from './workspace';
 
+import '../styles/table.css';
+
 interface TableViewProps {
   childItem: Item;
   index: number;
@@ -38,7 +40,7 @@ const TableView: React.FC<TableViewProps> = ({
   };
 
   return (
-    <tr className='dirItem' key={index}>
+    <tr key={index}>
       <td>
         {!isRenaming && (
           <input
@@ -54,7 +56,7 @@ const TableView: React.FC<TableViewProps> = ({
           <Image
             src='/folder.svg'
             alt='Folder logo'
-            width={100}
+            width={25}
             height={24}
             priority
           />
@@ -63,7 +65,7 @@ const TableView: React.FC<TableViewProps> = ({
           <Image
             src='/notes.svg'
             alt='notes logo'
-            width={100}
+            width={25}
             height={24}
             priority
           />
@@ -71,7 +73,9 @@ const TableView: React.FC<TableViewProps> = ({
       </td>
 
       {!isRenaming && (
-        <td onClick={() => handleItemClick(childItem)}>{childItem.name} </td>
+        <td className='dirItem' onClick={() => handleItemClick(childItem)}>
+          {childItem.name}{' '}
+        </td>
       )}
       {isRenaming && (
         <td>
@@ -81,11 +85,6 @@ const TableView: React.FC<TableViewProps> = ({
           />
         </td>
       )}
-      {/* <td>
-        {isRenaming && (
-          <RenameBox name={childItem.name} setIsRenaming={setIsRenaming} />
-        )}
-      </td> */}
     </tr>
   );
 };
