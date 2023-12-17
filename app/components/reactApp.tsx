@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Workspace } from './workspace';
 import '../styles/headers.css';
 import { Roboto } from 'next/font/google';
+import Image from 'next/image';
 
 const roboto = Roboto({
   weight: '400',
@@ -13,7 +14,17 @@ const roboto = Roboto({
 function Header() {
   return (
     <header>
-      <h1>Notee</h1>
+      <h1>
+        <Image
+          src='/notebook.svg'
+          alt='Notee Logo'
+          id='Logo'
+          width={25}
+          height={25}
+          priority
+        />
+        Notee
+      </h1>
     </header>
   );
 }

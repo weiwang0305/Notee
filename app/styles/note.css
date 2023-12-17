@@ -24,16 +24,3 @@ textarea {
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.06);
   height: 300px;
 }
-
-.noteSection button {
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.noteSection button:hover {
-  background-color: #45a049;
-}

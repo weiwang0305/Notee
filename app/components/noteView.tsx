@@ -44,7 +44,9 @@ const NoteView: React.FC<NoteViewProps> = ({ note }) => {
             <textarea value={text} onChange={handleNoteChange} />
           </div>
           <div>
-            <button onClick={handleNoteSubmit}>Save</button>
+            <button className='button' onClick={handleNoteSubmit}>
+              Save
+            </button>
           </div>
         </div>
       ) : (

@@ -2,16 +2,12 @@
   width: 100%;
 }
 
-.dirItem {
+.dirItemDirectory,
+.dirItemNote {
   width: 100%;
-  border: 1px solid black;
   transition: background-color 0.3s;
   margin: 8px;
   height: 30px;
-}
-
-.dirItem:hover {
-  background-color: #e0e0e0;
 }
 
 .button {
@@ -25,11 +21,17 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  background-color: #1a73e8;
-  color: #fff;
+  background-color: #d6c9c2;
+  color: #14213d;
   margin-right: 10px;
   margin-top: 20px;
 }
 .button:hover {
-  background-color: #468be4;
+  background-color: #e3d5ca;
+}
+
+.buttonContainer {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
 }

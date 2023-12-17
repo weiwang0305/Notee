@@ -5,6 +5,7 @@ import RenameBox from './renameBox';
 import Image from 'next/image';
 
 import '../styles/directory.css';
+import '../styles/table.css';
 import TableView from './tableView';
 
 interface DirectoryViewProps {
@@ -27,15 +28,13 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
   // Adding notes
   const handleAddNote = () => {
     const fileName = window.prompt('Enter the name of the new note:');
-
     //Checking to see if the fileName already exists
-    if (fileName === null) {
+    if (fileName === null || fileName === undefined || fileName === '') {
+      alert('Please enter a name');
       return;
     } else {
-      console.log(currentItem);
       if (currentItem?.items) {
         for (let i = 0; i < currentItem.items.length; i++) {
-          console.log(currentItem.items[i].name, fileName);
           if (currentItem.items[i].name === fileName) {
             alert('Name already exist');
             return;
@@ -106,8 +105,20 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
     const result: string[] = [];
     const inputBoxes: NodeListOf<HTMLFormElement> =
       document.querySelectorAll('input[type="text"]');
-    for (let i = 0; i < inputBoxes.length; i++) {
-      result.push(inputBoxes[i].value);
+
+    //Checks to see if the new names for a different file is duplicating an existing file
+    if (currentItem && currentItem.items) {
+      for (let i = 0; i < inputBoxes.length; i++) {
+        for (let j = 0; j < currentItem?.items?.length; j++) {
+          // Do not want to check for when the indexes are the same because we allow users to not change filenames
+          if (currentItem.items[j].name === inputBoxes[i].value && i !== j) {
+            alert('Duplicate name found');
+            return;
+          }
+        }
+
+        result.push(inputBoxes[i].value);
+      }
     }
     updateName(result);
     setIsRenaming(false);
@@ -115,35 +126,46 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
 
   return (
     <div>
-      {!isRenaming && (
+      <div className='buttonContainer'>
+        {!isRenaming && (
+          <div>
+            <button className='button' onClick={handleAddNote}>
+              New Note
+            </button>
+            <button className='button' onClick={handleAddDirectory}>
+              New Directory
+            </button>
+          </div>
+        )}
         <div>
-          <button className='button' onClick={handleAddNote}>
-            New Note
-          </button>
-          <button className='button' onClick={handleAddDirectory}>
-            New Directory
-          </button>
-          <button className='button' onClick={handleDeletion}>
-            Delete
+          {!isRenaming && (
+            <button
+              id='deleteButton'
+              className='button'
+              onClick={handleDeletion}
+            >
+              Delete
+            </button>
+          )}
+          <button
+            className='button'
+            id='renameButton'
+            onClick={() => {
+              if (
+                currentItem &&
+                currentItem.items &&
+                currentItem.items.length > 0 &&
+                currentItem.items != undefined &&
+                !isRenaming
+              ) {
+                setIsRenaming(true);
+              }
+            }}
+          >
+            Rename
           </button>
         </div>
-      )}
-      <button
-        className='button'
-        onClick={() => {
-          if (
-            currentItem &&
-            currentItem.items &&
-            currentItem.items.length > 0 &&
-            currentItem.items != undefined &&
-            !isRenaming
-          ) {
-            setIsRenaming(true);
-          }
-        }}
-      >
-        Rename
-      </button>
+      </div>
 
       <table className='dirSection'>
         <tbody>

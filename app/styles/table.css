@@ -2,16 +2,21 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  border-spacing: 0 2px;
 }
 
-th,
 td {
-  border: 1px solid black;
+  border: 2px solid #cdc0b7;
   padding: 8px;
   text-align: left;
   width: 0.1%;
+  color: #14213d;
 }
 
-th {
-  background-color: #f2f2f2;
+.dirItemDirectory:hover {
+  background-color: #e4d8c9;
+}
+
+.dirItemNote:hover {
+  background-color: #ecd9ce;
 }

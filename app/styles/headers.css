@@ -1,8 +1,9 @@
 header {
-  background-color: #3498db;
-  color: #fff;
+  background-color: #d6c9c2;
+  color: #14213d;
   padding: 20px;
   text-align: center;
+  min-width: 300px;
 }
 
 h1 {
@@ -11,10 +12,19 @@ h1 {
 }
 
 main {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0;
+  width: 70%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-  width: 100%;
+body {
+  margin: 0;
+  padding: 20px;
+  background-image: url('../../public/background.png');
+  background-size: 100% auto;
+  display: flex;
+  justify-content: center;
+  z-index: -1;
 }

@@ -70,9 +70,17 @@ const TableView: React.FC<TableViewProps> = ({
         )}
       </td>
 
-      {!isRenaming && (
-        <td className='dirItem' onClick={() => handleItemClick(childItem)}>
-          {childItem.name}{' '}
+      {!isRenaming && childItem.type === 'directory' && (
+        <td
+          className='dirItemDirectory'
+          onClick={() => handleItemClick(childItem)}
+        >
+          {childItem.name}
+        </td>
+      )}
+      {!isRenaming && childItem.type === 'note' && (
+        <td className='dirItemNote' onClick={() => handleItemClick(childItem)}>
+          {childItem.name}
         </td>
       )}
       {isRenaming && (
