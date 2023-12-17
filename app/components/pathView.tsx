@@ -3,32 +3,38 @@ import { Item } from './types';
 import { WorkspaceContext } from './workspace';
 import Image from 'next/image';
 
+import '../styles/path.css';
+
 interface PathViewProps {
   path: Item;
 }
 
 const PathView: React.FC<PathViewProps> = () => {
   const { currentItem } = useContext(WorkspaceContext);
+
+  //creating an array to store all the paths
   const allPath = [];
-  console.log(currentItem);
+
+  //If currentItem exist we will continue to go through the node until currentItem.parent doesn't exist
   if (currentItem) {
     let pathfinder = currentItem;
     while (pathfinder.parent) {
       allPath.push(pathfinder.parent);
       pathfinder = pathfinder.parent;
     }
+    //reversing because when rendering, it actually prepends each element of the array in the front.
     allPath.reverse();
   }
 
   return (
-    <div>
+    <div className='pathContainer'>
       {allPath.map((path) => (
-        <span key={path.name}>
+        <div className='pathBox' key={path.name}>
           {path.type === 'directory' && (
             <Image
               src='/folder.svg'
               alt='Folder logo'
-              width={75}
+              width={20}
               height={15}
               priority
             />
@@ -37,7 +43,7 @@ const PathView: React.FC<PathViewProps> = () => {
             <Image
               src='/notes.svg'
               alt='notes logo'
-              width={75}
+              width={20}
               height={15}
               priority
             />
@@ -47,19 +53,19 @@ const PathView: React.FC<PathViewProps> = () => {
           <Image
             src='/arrowforward.svg'
             alt='arrow forward'
-            width={75}
+            width={20}
             height={15}
             priority
           />
-        </span>
+        </div>
       ))}
 
-      <span>
+      <div className='currentDirectory'>
         {currentItem?.type === 'directory' && (
           <Image
             src='/folder.svg'
             alt='Folder logo'
-            width={75}
+            width={20}
             height={15}
             priority
           />
@@ -68,13 +74,13 @@ const PathView: React.FC<PathViewProps> = () => {
           <Image
             src='/notes.svg'
             alt='notes logo'
-            width={75}
+            width={20}
             height={15}
             priority
           />
         )}
         {currentItem?.name}
-      </span>
+      </div>
     </div>
   );
 };

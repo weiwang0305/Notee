@@ -13,7 +13,7 @@ const roboto = Roboto({
 function Header() {
   return (
     <header>
-      <h1>Quilt Labs Notes Filesystem App</h1>
+      <h1>Notee</h1>
     </header>
   );
 }

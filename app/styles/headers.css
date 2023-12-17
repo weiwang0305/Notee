@@ -15,4 +15,6 @@ main {
   margin: 0 auto;
   padding: 20px;
   background-color: #ecf0f1;
+
+  width: 100%;
 }

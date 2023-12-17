@@ -25,11 +25,10 @@ const TableView: React.FC<TableViewProps> = ({
   const { selectedBoxes, setSelectedBoxes, updateName } =
     useContext(WorkspaceContext);
 
+  //When a checkbox is checked, it will be added into the selectedBoxes state in the workspace.tsx, if not, it will be filtered out
   const checkboxHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     let isSelected = event.target.checked;
     let value = event.target.value;
-    console.log(event.target.value);
-    console.log(selectedBoxes);
     if (isSelected) {
       setSelectedBoxes((prevItem: string[]) => [...prevItem, value]);
     } else {

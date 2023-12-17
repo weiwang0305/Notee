@@ -77,6 +77,11 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
 
   //Deleting directory or file
   const handleDeletion = () => {
+    const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+    if (checked.length === 0) {
+      alert('You have not deleted any files to delete');
+      return;
+    }
     const confirmation = confirm('Want to delete?');
 
     //Asking for confirmation to delete
@@ -86,9 +91,6 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
       //Using a hashmap to store all the fileNames that has been checked off.
       //Hashmap can help speed up lookups
       const result = new Map();
-      const checked = document.querySelectorAll(
-        'input[type="checkbox"]:checked'
-      );
       for (let i = 0; i < checked.length; i++) {
         result.set(checked[i].getAttribute('value'), 1);
       }
@@ -116,14 +118,6 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
       {!isRenaming && (
         <div>
           <button className='button' onClick={handleAddNote}>
-            {/* <Image
-              className='addnoteSVG'
-              src='/addnote.svg'
-              alt='Add note'
-              width={20}
-              height={20}
-              priority
-            /> */}
             New Note
           </button>
           <button className='button' onClick={handleAddDirectory}>

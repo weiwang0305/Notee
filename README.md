@@ -54,4 +54,7 @@ If there are any questions or issues about the starter code, please reach out to
 ## Thoughts and Journey
 
 **Deleting Items**
-I decided to go down the requirement one at a time. I started with Deleting items. Before actually working on the code, I took approximately one hour looking through the code trying to understand it. First things I've noticed was that some hooks were foreign to me.
+
+I decided to go down the requirement one at a time. I started with Deleting items. Before actually working on the code, I took approximately one hour looking through the code trying to understand it. First things I've noticed was that some hooks were foreign to me. I've never used useContext before and learning to use that really changed the way I thought about using props. I decided to avoid continue the structure by trying to keep all the functions that required using setCurrentItem to be written in the workspace.tsx and then using useContext in the smaller components.
+
+The first small issue I ran into was when an item with the name "a" was filtered out and deleted, the next time I created an item with the exact name, the checkbox would be automatically checked off. This was because I didn't actually make a checked attribute that defaulted to false so I think it saved the previous state somewhere. I solved this issue by using a selectedBox state and made the checkbox check to see if selectedBox includes the name and if not, it will default to false. SelectedBox gets reset back to an empty array after deleting

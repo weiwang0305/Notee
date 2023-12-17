@@ -10,6 +10,8 @@ interface NoteViewProps {
 
 const NoteView: React.FC<NoteViewProps> = ({ note }) => {
   const { updateNote } = useContext(WorkspaceContext);
+
+  //state for editing the text in the notes
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(note.note);
 
@@ -18,11 +20,11 @@ const NoteView: React.FC<NoteViewProps> = ({ note }) => {
   };
 
   const handleNoteSubmit = () => {
-    if (text == null) {
+    //Checks to make sure there are actual notes in the text to update
+    if (text === '' || text === undefined) {
       alert('Cannot save empty note.');
       return;
     }
-
     updateNote(text);
     setIsEditing(false);
   };

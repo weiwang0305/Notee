@@ -22,8 +22,6 @@ function ItemView(item: Item) {
   return (
     <div>
       <PathView path={item} />
-      <h2>Current Item: {item.name}</h2>
-      <h3>Type: {item.type}</h3>
       <div className='item'>
         {item.parent != null && (
           <button className='button' onClick={goToEnclosingFolder}>
@@ -68,8 +66,10 @@ export function Workspace() {
     items: [],
   });
 
+  //All of the boxes that have been selected in the tableview.tsx
   const [selectedBoxes, setSelectedBoxes] = useState<string[]>([]);
 
+  //Adding notes
   const addNote = useCallback((fileName: string, noteText: string) => {
     setCurrentItem((prevItem) => {
       // Deep clone the item
@@ -88,6 +88,7 @@ export function Workspace() {
     });
   }, []);
 
+  //Adding directory
   const addDirectory = useCallback((newDirName: string) => {
     setCurrentItem((prevItem) => {
       // Deep clone the item
@@ -106,6 +107,7 @@ export function Workspace() {
     });
   }, []);
 
+  //Updates the notes
   const updateNote = useCallback((newText: string) => {
     setCurrentItem((prevItem) => {
       const newItem = _.cloneDeep(prevItem);
@@ -116,6 +118,7 @@ export function Workspace() {
     });
   }, []);
 
+  //Deleting directory or file only keep the items if it doesn't exist in the hashmap keys
   const deleteDirectory = useCallback((result: Map<string, number>) => {
     setCurrentItem((prevItem) => {
       const newItem = _.cloneDeep(prevItem);
@@ -127,6 +130,7 @@ export function Workspace() {
     setSelectedBoxes([]);
   }, []);
 
+  //Used in the rename function. Updates each of the names by looping through an array of updated names.
   const updateName = useCallback((newNames: string[]) => {
     setCurrentItem((prevItem) => {
       const newItem = _.cloneDeep(prevItem);
@@ -140,6 +144,7 @@ export function Workspace() {
     });
   }, []);
 
+  //Sorting the Items by directory first and then comparing the names by alphabetical
   const sortItems = (newItem: Item) => {
     if (newItem.items) {
       newItem.items.sort((a, b) => {
