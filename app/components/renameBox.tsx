@@ -1,35 +1,22 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, MouseEvent } from 'react';
 import { WorkspaceContext } from './workspace';
+import { Item } from './types';
 
 const RenameBox = ({
   name,
-  setIsRenaming,
 }: {
+  handleNameSubmit: (event: MouseEvent<HTMLButtonElement>) => void;
   name: string;
-  setIsRenaming: (bool: boolean) => void;
 }) => {
-  const { updateName } = useContext(WorkspaceContext);
-  const [text, setText] = useState(name);
-  const originalName = name;
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setText(event.target.value);
+    setBoxText(event.target.value);
   };
-
-  const handleNameSubmit = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      updateName(text, originalName);
-      setIsRenaming(false);
-    }
-  };
+  //State for text for each Rename Box Component
+  const [boxText, setBoxText] = useState(name);
 
   return (
     <div>
-      <input
-        type='text'
-        value={text}
-        onChange={handleNameChange}
-        onKeyDown={handleNameSubmit}
-      ></input>
+      <input type='text' value={boxText} onChange={handleNameChange}></input>
     </div>
   );
 };

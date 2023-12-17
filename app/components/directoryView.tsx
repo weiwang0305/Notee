@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState, MouseEvent } from 'react';
 import { Item } from './types';
 import { WorkspaceContext } from './workspace';
 import RenameBox from './renameBox';
@@ -18,6 +18,7 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
     setCurrentItem,
     deleteDirectory,
     currentItem,
+    updateName,
   } = useContext(WorkspaceContext);
 
   //State for renaming
@@ -90,14 +91,39 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
     }
   };
 
+  const handleNameSubmit = (event: MouseEvent<HTMLButtonElement>) => {
+    console.log(currentItem);
+    const result: string[] = [];
+    const inputBoxes: NodeListOf<HTMLFormElement> =
+      document.querySelectorAll('input[type="text"]');
+    for (let i = 0; i < inputBoxes.length; i++) {
+      result.push(inputBoxes[i].value);
+    }
+
+    updateName(result);
+
+    console.log(result);
+    setIsRenaming(false);
+  };
+
   return (
     <div>
-      <button onClick={handleAddNote}>New Note</button>
-      <button onClick={handleAddDirectory}>New Directory</button>
-      <button onClick={handleDeletion}>Delete</button>
+      {!isRenaming && (
+        <div>
+          <button onClick={handleAddNote}>New Note</button>
+          <button onClick={handleAddDirectory}>New Directory</button>
+          <button onClick={handleDeletion}>Delete</button>
+        </div>
+      )}
       <button
         onClick={() => {
-          if (!isRenaming) {
+          if (
+            currentItem &&
+            currentItem.items &&
+            currentItem.items.length > 0 &&
+            currentItem.items != undefined &&
+            !isRenaming
+          ) {
             setIsRenaming(true);
           }
         }}
@@ -115,10 +141,12 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
               handleItemClick={handleItemClick}
               isRenaming={isRenaming}
               setIsRenaming={setIsRenaming}
+              handleNameSubmit={handleNameSubmit}
             />
           ))}
         </tbody>
       </table>
+      {isRenaming && <button onClick={handleNameSubmit}>Submit</button>}
     </div>
   );
 };

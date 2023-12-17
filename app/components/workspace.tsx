@@ -42,7 +42,7 @@ interface WorkspaceContextProps {
   addDirectory: (newDirName: string) => void;
   updateNote: (newText: string) => void;
   deleteDirectory: (result: Map<string, number>) => void;
-  updateName: (newName: string, originalName: string) => void;
+  updateName: (newName: string[]) => void;
   selectedBoxes: string[] | null;
   setSelectedBoxes: (box: any) => void; //Was stuck on this was a while so I'm leaving it as any for now
 }
@@ -54,7 +54,7 @@ export const WorkspaceContext = React.createContext<WorkspaceContextProps>({
   addDirectory: (newDirName: string) => {},
   updateNote: (newText: string) => {},
   deleteDirectory: (result: Map<string, number>) => {},
-  updateName: (newName: string, originalName: string) => {},
+  updateName: (newName: string[]) => {},
   selectedBoxes: [],
   setSelectedBoxes: (box: string[]) => {},
 });
@@ -125,14 +125,12 @@ export function Workspace() {
     setSelectedBoxes([]);
   }, []);
 
-  const updateName = useCallback((newName: string, originalName: string) => {
+  const updateName = useCallback((newNames: string[]) => {
     setCurrentItem((prevItem) => {
       const newItem = _.cloneDeep(prevItem);
       if (newItem.items) {
         for (let i = 0; i < newItem.items.length; i++) {
-          if (newItem.items[i].name === originalName) {
-            newItem.items[i].name = newName;
-          }
+          newItem.items[i].name = newNames[i];
         }
       }
       sortItems(newItem);

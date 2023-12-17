@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import RenameBox from './renameBox';
 import { Item } from './types';
-import { useState, useContext } from 'react';
+import { useState, useContext, MouseEvent } from 'react';
 import { WorkspaceContext } from './workspace';
 
 interface TableViewProps {
@@ -10,6 +10,7 @@ interface TableViewProps {
   handleItemClick: (item: Item) => void;
   isRenaming: boolean;
   setIsRenaming: (bool: boolean) => void;
+  handleNameSubmit: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const TableView: React.FC<TableViewProps> = ({
@@ -18,8 +19,11 @@ const TableView: React.FC<TableViewProps> = ({
   handleItemClick,
   isRenaming,
   setIsRenaming,
+  handleNameSubmit,
 }) => {
-  const { selectedBoxes, setSelectedBoxes } = useContext(WorkspaceContext);
+  const { selectedBoxes, setSelectedBoxes, updateName } =
+    useContext(WorkspaceContext);
+
   const checkboxHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     let isSelected = event.target.checked;
     let value = event.target.value;
@@ -64,12 +68,23 @@ const TableView: React.FC<TableViewProps> = ({
           />
         )}
       </td>
-      <td onClick={() => handleItemClick(childItem)}>{childItem.name}</td>
-      <td>
+
+      {!isRenaming && (
+        <td onClick={() => handleItemClick(childItem)}>{childItem.name} </td>
+      )}
+      {isRenaming && (
+        <td>
+          <RenameBox
+            handleNameSubmit={handleNameSubmit}
+            name={childItem.name}
+          />
+        </td>
+      )}
+      {/* <td>
         {isRenaming && (
           <RenameBox name={childItem.name} setIsRenaming={setIsRenaming} />
         )}
-      </td>
+      </td> */}
     </tr>
   );
 };
