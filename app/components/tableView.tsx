@@ -22,8 +22,7 @@ const TableView: React.FC<TableViewProps> = ({
   isRenaming,
   handleNameSubmit,
 }) => {
-  const { selectedBoxes, setSelectedBoxes, updateName } =
-    useContext(WorkspaceContext);
+  const { selectedBoxes, setSelectedBoxes } = useContext(WorkspaceContext);
 
   //When a checkbox is checked, it will be added into the selectedBoxes state in the workspace.tsx, if not, it will be filtered out
   const checkboxHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
