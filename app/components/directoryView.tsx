@@ -1,10 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { Item } from './types';
 import { WorkspaceContext } from './workspace';
 import RenameBox from './renameBox';
 import Image from 'next/image';
 
 import '../styles/directory.css';
+import TableView from './tableView';
 
 interface DirectoryViewProps {
   directory: Item;
@@ -19,6 +20,7 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
     currentItem,
   } = useContext(WorkspaceContext);
 
+  //State for renaming
   const [isRenaming, setIsRenaming] = useState(false);
 
   const handleAddNote = () => {
@@ -30,11 +32,8 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
       if (currentItem?.items) {
         for (let i = 0; i < currentItem.items.length; i++) {
           console.log(currentItem.items[i].name, fileName);
-          if (
-            currentItem.items[i].name === fileName &&
-            currentItem.items[i].type === 'note'
-          ) {
-            alert('File name already exist');
+          if (currentItem.items[i].name === fileName) {
+            alert('Name already exist');
             return;
           }
         }
@@ -54,11 +53,8 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
     } else {
       if (currentItem?.items) {
         for (let i = 0; i < currentItem.items.length; i++) {
-          if (
-            currentItem.items[i].name === dirName &&
-            currentItem.items[i].type === 'directory'
-          ) {
-            alert('Directory already exist');
+          if (currentItem.items[i].name === dirName) {
+            alert('Name already exist');
             return;
           }
         }
@@ -80,6 +76,7 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
       const checked = document.querySelectorAll(
         'input[type="checkbox"]:checked'
       );
+      console.log(checked);
       for (let i = 0; i < checked.length; i++) {
         result.set(checked[i].getAttribute('value'), 1);
       }
@@ -87,6 +84,9 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
       console.log(result);
       if (result === null) return;
       deleteDirectory(result);
+      for (let i = 0; i < checked.length; i++) {
+        console.log('checks', checked[i]);
+      }
     }
   };
 
@@ -108,42 +108,14 @@ const DirectoryView: React.FC<DirectoryViewProps> = ({ directory }) => {
       <table className='dirSection'>
         <tbody>
           {directory.items?.map((childItem, index) => (
-            <tr className='dirItem' key={index}>
-              <td>
-                <input type='checkbox' value={childItem.name}></input>
-              </td>
-              <td>
-                {childItem.type === 'directory' && (
-                  <Image
-                    src='/folder.svg'
-                    alt='Folder logo'
-                    width={100}
-                    height={24}
-                    priority
-                  />
-                )}
-                {childItem.type === 'note' && (
-                  <Image
-                    src='/notes.svg'
-                    alt='notes logo'2
-                    width={100}
-                    height={24}
-                    priority
-                  />
-                )}
-              </td>
-              <td onClick={() => handleItemClick(childItem)}>
-                {childItem.name}
-              </td>
-              <td>
-                {isRenaming && (
-                  <RenameBox
-                    name={childItem.name}
-                    setIsRenaming={setIsRenaming}
-                  />
-                )}
-              </td>
-            </tr>
+            <TableView
+              childItem={childItem}
+              index={index}
+              key={index}
+              handleItemClick={handleItemClick}
+              isRenaming={isRenaming}
+              setIsRenaming={setIsRenaming}
+            />
           ))}
         </tbody>
       </table>

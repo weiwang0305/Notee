@@ -19,10 +19,9 @@ function ItemView(item: Item) {
 
     setCurrentItem(item.parent);
   }, [item, setCurrentItem]);
-
   return (
     <div>
-      {currentItem && <PathView />}
+      <PathView path={item} />
       <h2>Current Item: {item.name}</h2>
       <h3>Type: {item.type}</h3>
       <div className='item'>
@@ -44,6 +43,8 @@ interface WorkspaceContextProps {
   updateNote: (newText: string) => void;
   deleteDirectory: (result: Map<string, number>) => void;
   updateName: (newName: string, originalName: string) => void;
+  selectedBoxes: string[] | null;
+  setSelectedBoxes: (box: any) => void; //Was stuck on this was a while so I'm leaving it as any for now
 }
 
 export const WorkspaceContext = React.createContext<WorkspaceContextProps>({
@@ -54,6 +55,8 @@ export const WorkspaceContext = React.createContext<WorkspaceContextProps>({
   updateNote: (newText: string) => {},
   deleteDirectory: (result: Map<string, number>) => {},
   updateName: (newName: string, originalName: string) => {},
+  selectedBoxes: [],
+  setSelectedBoxes: (box: string[]) => {},
 });
 
 export function Workspace() {
@@ -62,6 +65,8 @@ export function Workspace() {
     type: 'directory',
     items: [],
   });
+
+  const [selectedBoxes, setSelectedBoxes] = useState<string[]>([]);
 
   const addNote = useCallback((fileName: string, noteText: string) => {
     setCurrentItem((prevItem) => {
@@ -117,6 +122,7 @@ export function Workspace() {
         : undefined;
       return newItem;
     });
+    setSelectedBoxes([]);
   }, []);
 
   const updateName = useCallback((newName: string, originalName: string) => {
@@ -150,22 +156,6 @@ export function Workspace() {
     }
   };
 
-  // const sortItems = (newItem: Item) => {
-  //   if(newItem.items < 2) {
-  //     return newItem.items
-  //   }
-  //   const mid = Math.floor(newItem.items.length / 2)
-  //   const leftArray = newItem.items.slice(0,mid)
-  //   const rightArray = newItem.items.slice(mid)
-  //   return merge(mergeSort(leftArray), mergeSort(rightArray))
-  // }
-  // const merge = (leftArray,rightArray) => {
-  //   const sortedArray = []
-  //   while(leftArray.length && rightArray.length){
-  //     if(leftArray[0])
-  //   }
-  // }
-
   return (
     <div className='workspace'>
       <WorkspaceContext.Provider
@@ -177,6 +167,8 @@ export function Workspace() {
           updateNote,
           deleteDirectory,
           updateName,
+          selectedBoxes,
+          setSelectedBoxes,
         }}
       >
         <ItemView {...currentItem} />
