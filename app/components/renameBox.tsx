@@ -1,6 +1,4 @@
-import { useState, useContext, MouseEvent } from 'react';
-import { WorkspaceContext } from './workspace';
-import { Item } from './types';
+import { useState, MouseEvent } from 'react';
 
 const RenameBox = ({
   name,

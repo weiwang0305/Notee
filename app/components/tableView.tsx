@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import RenameBox from './renameBox';
 import { Item } from './types';
-import { useState, useContext, MouseEvent } from 'react';
+import { useContext, MouseEvent } from 'react';
 import { WorkspaceContext } from './workspace';
 
 import '../styles/table.css';

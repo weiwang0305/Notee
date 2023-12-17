@@ -1,8 +1,6 @@
 import React, { useContext, useState, MouseEvent } from 'react';
 import { Item } from './types';
 import { WorkspaceContext } from './workspace';
-import RenameBox from './renameBox';
-import Image from 'next/image';
 
 import '../styles/directory.css';
 import '../styles/table.css';

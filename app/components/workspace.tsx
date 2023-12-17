@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback, Dispatch } from 'react';
 import { Item } from './types';
 import NoteView from './noteView';
 import DirectoryView from './directoryView';
@@ -44,7 +44,7 @@ interface WorkspaceContextProps {
   deleteDirectory: (result: Map<string, number>) => void;
   updateName: (newName: string[]) => void;
   selectedBoxes: string[] | null;
-  setSelectedBoxes: (box: any) => void; //Was stuck on this was a while so I'm leaving it as any for now
+  setSelectedBoxes: (box: any) => void;
 }
 
 export const WorkspaceContext = React.createContext<WorkspaceContextProps>({
@@ -56,7 +56,7 @@ export const WorkspaceContext = React.createContext<WorkspaceContextProps>({
   deleteDirectory: (result: Map<string, number>) => {},
   updateName: (newName: string[]) => {},
   selectedBoxes: [],
-  setSelectedBoxes: (box: string[]) => {},
+  setSelectedBoxes: (box: string[] | null) => {},
 });
 
 export function Workspace() {
